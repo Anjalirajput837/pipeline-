@@ -1,0 +1,23 @@
+name: Deploy to Nginx
+
+on:
+  push:
+    branches:
+      - main  # Runs every time you push code to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Copy files via SSH (SCP)
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.13.126.71.250 }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "."           # Copy everything from repo
+          target: "/var/www/html" # Target folder on server
+          strip_components: 0
